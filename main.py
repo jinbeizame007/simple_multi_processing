@@ -78,7 +78,7 @@ def run():
     mp.freeze_support()
     
     n_actors = 8
-    path = './memory.pt'#os.path.join('./', 'memory.pt')
+    path = os.path.join('./', 'memory.pt')
     try:
         os.remove(path)
     except:
