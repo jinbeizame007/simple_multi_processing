@@ -22,9 +22,9 @@ def actor_process(path):
     sleep(np.random.random()*5)
     
     # 既にファイルが存在するなら、追加して保存．無いなら新しく保存．
-    if os.path.isfile(path):
-        while True:
-            try:
+    while True:
+        try:
+            if os.path.isfile(path):
                 # メモリを読み込み
                 memory = torch.load(path)
                 # メモリファイルを削除
@@ -34,18 +34,14 @@ def actor_process(path):
                 # メモリを保存
                 torch.save(memory, path)
                 break
-            except:
-                # 他のプロセスがファイルを開いてたら、タイミングをずらしてまた開く
-                sleep(np.random.random()+2)
-    else:
-        while True:
-            try:
+            else:
                 memory = dict()
                 memory['obs'] = obs
                 torch.save(memory, path)
                 break
-            except:
-                sleep(np.random.random()+2)
+        except:
+            # 他のプロセスがファイルを開いてたら、タイミングをずらしてまた開く
+            sleep(np.random.random()*2+2)
 
 
 def learner_process(path, n_actors):
@@ -71,7 +67,7 @@ def learner_process(path, n_actors):
                     return
             except:
                 # 他のプロセスがファイルを開いてたら、タイミングをずらしてまた開く
-                sleep(np.random.random()+2)
+                sleep(np.random.random()*2+2)
 
 
 def run():
